@@ -1,0 +1,10 @@
+use Mix.Config
+
+# Configure your database
+config :aspirin, Aspirin.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  username: "postgres",
+  password: "postgres",
+  database: "aspirin_dev",
+  hostname: "localhost",
+  pool_size: 10

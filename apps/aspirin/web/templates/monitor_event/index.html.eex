@@ -1,0 +1,62 @@
+<div id="monitor-index-page">
+  <div id="monitor-state">
+    <h2 class="text-muted">Not Monitoring</h2>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Address</th>
+        <th>Port</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>State</th>
+        <th>Last Working</th>
+        <th>State Updated</th>
+        <th>Enabled</th>
+
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for event <- @monitor_events do %>
+        <tr id="<%= css_identity(event) %>">
+          <td><%= event.addr %></td>
+          <td><%= event.port %></td>
+          <td><%= event.name %></td>
+          <td><%= event.type %></td>
+          <td class="event-state">------</td>
+          <td class="last-ok-time">------</td>
+          <td class="state-updated-at">------</td>
+          <td>
+            <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="<%= switch_id event %>">
+              <input type="checkbox"
+                id="<%= switch_id event %>"
+                class="mdl-switch__input enabled-switch"
+                data-id="<%= event.id %>"
+                <%= switch_checked_flag event %>>
+              <span class="mdl-switch__label"></span>
+            </label>
+          </td>
+
+          <td class="text-right">
+            <%= link to: monitor_event_path(@conn, :edit, event), class: "btn btn-default btn-xs" do %>
+              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+            <%= end %>
+            <%= link to: monitor_event_path(@conn, :delete, event), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-default btn-xs" do %>
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+            <%= end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= link "New monitor event", to: monitor_event_path(@conn, :new) %>
+
+  <audio id="alert-audio" src="/media/alert.mp3" type="audio/mp3"></audio>
+</div>
+<div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
+  <div class="mdl-snackbar__text"></div>
+  <button class="mdl-snackbar__action" type="button"></button>
+</div>

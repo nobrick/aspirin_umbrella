@@ -1,0 +1,28 @@
+<h2>Show monitor event</h2>
+
+<ul>
+
+  <li>
+    <strong>Addr:</strong>
+    <%= @monitor_event.addr %>
+  </li>
+
+  <li>
+    <strong>Port:</strong>
+    <%= @monitor_event.port %>
+  </li>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @monitor_event.name %>
+  </li>
+
+  <li>
+    <strong>Type:</strong>
+    <%= @monitor_event.type %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: monitor_event_path(@conn, :edit, @monitor_event) %>
+<%= link "Back", to: monitor_event_path(@conn, :index) %>
