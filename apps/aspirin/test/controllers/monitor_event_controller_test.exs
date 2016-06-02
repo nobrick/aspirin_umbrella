@@ -2,12 +2,17 @@ defmodule Aspirin.MonitorEventControllerTest do
   use Aspirin.ConnCase
 
   alias Aspirin.MonitorEvent
-  @valid_attrs %{addr: "some content", name: "some content", port: 42, type: "some content"}
+  @addr "192.168.1.1"
+  @valid_attrs %{addr: @addr, name: "content", port: 80, type: "port"}
   @invalid_attrs %{}
+
+  def insert_monitor_event do
+    Repo.insert! %MonitorEvent{addr: @addr, name: "content", port: 80}
+  end
 
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, monitor_event_path(conn, :index)
-    assert html_response(conn, 200) =~ "Listing monitor events"
+    assert html_response(conn, 200) =~ "Monitoring"
   end
 
   test "renders form for new resources", %{conn: conn} do
@@ -26,39 +31,27 @@ defmodule Aspirin.MonitorEventControllerTest do
     assert html_response(conn, 200) =~ "New monitor event"
   end
 
-  test "shows chosen resource", %{conn: conn} do
-    monitor_event = Repo.insert! %MonitorEvent{}
-    conn = get conn, monitor_event_path(conn, :show, monitor_event)
-    assert html_response(conn, 200) =~ "Show monitor event"
-  end
-
-  test "renders page not found when id is nonexistent", %{conn: conn} do
-    assert_error_sent 404, fn ->
-      get conn, monitor_event_path(conn, :show, -1)
-    end
-  end
-
   test "renders form for editing chosen resource", %{conn: conn} do
-    monitor_event = Repo.insert! %MonitorEvent{}
+    monitor_event = insert_monitor_event
     conn = get conn, monitor_event_path(conn, :edit, monitor_event)
     assert html_response(conn, 200) =~ "Edit monitor event"
   end
 
   test "updates chosen resource and redirects when data is valid", %{conn: conn} do
-    monitor_event = Repo.insert! %MonitorEvent{}
+    monitor_event = insert_monitor_event
     conn = put conn, monitor_event_path(conn, :update, monitor_event), monitor_event: @valid_attrs
-    assert redirected_to(conn) == monitor_event_path(conn, :show, monitor_event)
+    assert redirected_to(conn) == monitor_event_path(conn, :index)
     assert Repo.get_by(MonitorEvent, @valid_attrs)
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    monitor_event = Repo.insert! %MonitorEvent{}
+    monitor_event = insert_monitor_event
     conn = put conn, monitor_event_path(conn, :update, monitor_event), monitor_event: @invalid_attrs
-    assert html_response(conn, 200) =~ "Edit monitor event"
+    assert redirected_to(conn) == monitor_event_path(conn, :index)
   end
 
   test "deletes chosen resource", %{conn: conn} do
-    monitor_event = Repo.insert! %MonitorEvent{}
+    monitor_event = insert_monitor_event
     conn = delete conn, monitor_event_path(conn, :delete, monitor_event)
     assert redirected_to(conn) == monitor_event_path(conn, :index)
     refute Repo.get(MonitorEvent, monitor_event.id)

@@ -3,7 +3,7 @@ defmodule Aspirin.MonitorEventTest do
 
   alias Aspirin.MonitorEvent
 
-  @valid_attrs %{addr: "some content", name: "some content", port: 42, type: "some content"}
+  @valid_attrs %{addr: "192.168.1.1", name: "content", port: 80, type: "port"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
