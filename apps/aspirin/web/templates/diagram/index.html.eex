@@ -1,0 +1,22 @@
+<h2>Listing diagrams</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for diagram <- @diagrams do %>
+    <tr>
+      <td><%= link diagram.name, to: diagram_path(@conn, :show, diagram), class: "btn btn-default btn-xs" %></td>
+      <td class="text-right">
+        <%= link "Delete", to: diagram_path(@conn, :delete, diagram), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New diagram", to: diagram_path(@conn, :new) %>

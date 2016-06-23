@@ -54,6 +54,18 @@
 
   <%= link "New monitor event", to: monitor_event_path(@conn, :new) %>
 
+  <div class="mermaid">
+     graph LR
+     subgraph A
+     a1---a2
+     a1---a3
+     end
+
+     subgraph B
+     b1---b2
+     end
+  </div>
+
   <audio id="alert-audio" src="/media/alert.mp3" type="audio/mp3"></audio>
 </div>
 <div id="snackbar" class="mdl-js-snackbar mdl-snackbar">

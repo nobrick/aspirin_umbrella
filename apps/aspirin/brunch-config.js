@@ -69,7 +69,8 @@ exports.config = {
     styles: {
       'bootstrap': ['dist/css/bootstrap.min.css'],
       'font-awesome': ['css/font-awesome.min.css'],
-      'material-design-lite': ['material.min.css']
+      'material-design-lite': ['material.min.css'],
+      'mermaid': ['dist/mermaid.css']
     },
     globals: {
       $: 'jquery',

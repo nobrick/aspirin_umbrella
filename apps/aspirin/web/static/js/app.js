@@ -20,5 +20,6 @@ import "phoenix_html"
 
 import bootstrap from "bootstrap"
 import "material-design-lite"
+import mermaid from "mermaid"
 import socket from "./socket"
 import "./monitor_event/index"
