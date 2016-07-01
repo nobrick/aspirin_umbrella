@@ -10,7 +10,7 @@ defmodule Aspirin.PortMonitor.SocketHandler do
             identity: css_id,
             timestamp: :os.system_time(:milli_seconds),
             last_ok_time: last_ok_time}
-    IO.puts("[BROADCAST] #{inspect result} @ #{inspect msg}")
+    # IO.puts("[BROADCAST] #{inspect result} @ #{inspect msg}")
     case result do
       :ok ->
         msg = put_in(msg, [:body], :success)
