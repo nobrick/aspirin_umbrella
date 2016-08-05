@@ -7,6 +7,10 @@ defmodule Aspirin.PingMonitor do
     GenServer.start_link(__MODULE__, {:ok, ip}, [])
   end
 
+  def stop(server) do
+    GenServer.stop(server)
+  end
+
   ## Callbacks
 
   def init({:ok, ip}) do

@@ -11,8 +11,8 @@ defmodule Aspirin.MonitorEvent do
     timestamps
   end
 
-  @required_fields ~w(addr port name type)
-  @optional_fields ~w(enabled)
+  @required_fields ~w(addr name type)
+  @optional_fields ~w(port enabled)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -23,9 +23,28 @@ defmodule Aspirin.MonitorEvent do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
-    |> validate_inclusion(:type, ~w(port))
-    |> validate_number(:port, greater_than: 0, less_than: 65536)
+    |> validate_inclusion(:type, ~w(port ping))
     |> unique_constraint(:name)
+    |> changeset_by_type
+  end
+
+  defp changeset_by_type(model) when not is_tuple(model) do
+    #IO.puts "---- by type ----"
+    #model |> IO.inspect
+    #IO.puts "---- data by type ----"
+    #model.data |> IO.inspect
+    IO.puts "---- fetch_fiel data by type ----"
+    fetch_field(model, :type) |> IO.inspect
+    case fetch_field(model, :type) do
+      {_from, "port"} -> changeset_by_type({model, "port"})
+      _               -> model
+    end
+  end
+
+  defp changeset_by_type({model, "port"}) do
+    model
+    |> validate_required(:port)
+    |> validate_number(:port, greater_than: 0, less_than: 65536)
   end
 
   def by_name(query) do
