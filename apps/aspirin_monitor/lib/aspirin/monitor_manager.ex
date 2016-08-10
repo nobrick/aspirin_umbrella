@@ -46,7 +46,7 @@ defmodule Aspirin.MonitorManager do
   end
 
   def handle_call(:sync_repo, _from, %{monitors: _monitors} = state) do
-    events = from(m in MonitorEvent, where: m.enabled == "true")
+    events = from(m in MonitorEvent, where: m.enabled == true)
              |> Aspirin.Repo.all
 
     new = Enum.reduce(events, stop_all(state), fn(mon, acc) ->
@@ -64,9 +64,7 @@ defmodule Aspirin.MonitorManager do
       when is_integer(id) do
     case monitors do
       %{^id => %{pid: pid, type: type}} ->
-        if type == "port" do
-          :ok = PortMonitor.stop(pid)
-        end
+        stop_monitor(pid)
         {:reply, :ok, %{monitors: Map.delete(monitors, id)}}
       _ ->
         {:reply, :ok, state}
@@ -84,7 +82,7 @@ defmodule Aspirin.MonitorManager do
 
   @attrs [:id, :ip, :port, :type]
 
-  defp add_monitor(state, %MonitorEvent{addr: ip} = monitor)
+  defp add_monitor(state, %{addr: ip} = monitor)
       when is_map(state) do
     new_mon = monitor
               |> Map.from_struct
@@ -112,6 +110,8 @@ defmodule Aspirin.MonitorManager do
   end
 
   defp start_monitor(%{ip: ip, type: "ping"}), do: PingMonitor.start_link(ip)
+
+  defp stop_monitor(pid), do: GenServer.stop(pid)
 
   defp initial_state, do: %{monitors: %{}}
 end
