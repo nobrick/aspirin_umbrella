@@ -6,7 +6,6 @@ defmodule Aspirin.PortMonitor do
   end
 
   def stop(server) do
-    stop_monitor(server)
     GenServer.stop(server)
   end
 
@@ -88,6 +87,9 @@ defmodule Aspirin.PortMonitor do
     :timer.cancel(ref)
     {:reply, :ok, %{state | time_ref: :none}}
   end
+
+  def terminate(_reason, %{time_ref: :none}), do: :ok
+  def terminate(_reason, %{time_ref: ref}),   do: :timer.cancel(ref)
 
   defp to_ip(addr) when is_binary(addr) do
     addr |> String.to_char_list |> :inet.parse_address

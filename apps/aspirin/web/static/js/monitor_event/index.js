@@ -26,7 +26,7 @@ $("#monitor-index-page").ready(() => {
   })
 })
 
-const onTestPortUpdate = payload => {
+const onTestUpdate = (payload, error_html) => {
   if($("#monitor-index-page").length == 0) {
     return
   }
@@ -40,7 +40,7 @@ const onTestPortUpdate = payload => {
     eventState.addClass('text-success')
     row.removeClass('danger')
   } else {
-    eventState.html('<span class="label label-danger">INACTIVE</span><span class="label label-danger">' + payload.reason + "</span>")
+    eventState.html(error_html(payload))
     eventState.removeClass('text-success')
     eventState.addClass('text-danger')
     row.addClass('danger')
@@ -49,6 +49,20 @@ const onTestPortUpdate = payload => {
   eventStateUpdatedAt.data('time', payload.timestamp)
   eventStateUpdatedAt.text(moment(payload.timestamp).fromNow())
   lastOkTime.text(moment(payload.last_ok_time).format("YY-MM-DD HH:mm:ss"))
+}
+
+const onTestPortUpdate = payload => {
+  const error_html = payload => {
+    return '<span class="label label-danger">INACTIVE</span>' + '<span class="label label-danger">' + payload.reason + "</span>"
+  }
+  onTestUpdate(payload, error_html)
+}
+
+const onTestPingUpdate = payload => {
+  const error_html = payload => {
+    return '<span class="label label-danger">INACTIVE</span>'
+  }
+  onTestUpdate(payload, error_html)
 }
 
 const onEnabledStateUpdate = payload => {
@@ -66,4 +80,9 @@ const setChannel = c => {
   channel = c
 }
 
-export const callbacks = {onTestPortUpdate, onEnabledStateUpdate, setChannel}
+export const callbacks = {
+  onTestPortUpdate,
+  onTestPingUpdate,
+  onEnabledStateUpdate,
+  setChannel
+}

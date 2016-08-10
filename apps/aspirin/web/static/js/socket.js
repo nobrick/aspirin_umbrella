@@ -86,6 +86,11 @@ channel.on("test_port", payload => {
   monitorEvent.onTestPortUpdate(payload)
 })
 
+channel.on("test_ping", payload => {
+  console.log(payload)
+  monitorEvent.onTestPingUpdate(payload)
+})
+
 channel.on("switch:enabled", payload => {
   console.log(payload)
   monitorEvent.onEnabledStateUpdate(payload)
