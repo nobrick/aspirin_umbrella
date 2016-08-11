@@ -20,7 +20,7 @@
   <div class="form-group">
     <%= label f, :type, class: "control-label" %>
     <%= select f, :type, ["Ping": "ping", "Port": "port"],
-        value: event_type(@changeset) || "ping", class: "form-control" %>
+        selected: event_type(@changeset), class: "form-control" %>
     <%= error_tag f, :type %>
   </div>
 

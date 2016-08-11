@@ -5,7 +5,7 @@ defmodule Aspirin.MonitorEvent do
     field :addr, :string
     field :port, :integer
     field :name, :string
-    field :type, :string, default: "port"
+    field :type, :string, default: "ping"
     field :enabled, :boolean, default: true
 
     timestamps
